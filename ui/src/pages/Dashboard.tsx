@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "@/lib/router";
 import { useQuery } from "@tanstack/react-query";
+import { useTranslation } from "react-i18next";
 import { dashboardApi } from "../api/dashboard";
 import { activityApi } from "../api/activity";
 import { issuesApi } from "../api/issues";
@@ -32,6 +33,7 @@ function getRecentIssues(issues: Issue[]): Issue[] {
 }
 
 export function Dashboard() {
+  const { t } = useTranslation();
   const { selectedCompanyId, companies } = useCompany();
   const { openOnboarding } = useDialog();
   const { setBreadcrumbs } = useBreadcrumbs();
@@ -47,8 +49,8 @@ export function Dashboard() {
   });
 
   useEffect(() => {
-    setBreadcrumbs([{ label: "Dashboard" }]);
-  }, [setBreadcrumbs]);
+    setBreadcrumbs([{ label: t('nav.dashboard') }]);
+  }, [setBreadcrumbs, t]);
 
   const { data, isLoading, error } = useQuery({
     queryKey: queryKeys.dashboard(selectedCompanyId!),
@@ -233,67 +235,67 @@ export function Dashboard() {
             <MetricCard
               icon={Bot}
               value={data.agents.active + data.agents.running + data.agents.paused + data.agents.error}
-              label="Agents Enabled"
+              label={t('dashboard.agentsEnabled')}
               to="/agents"
               description={
                 <span>
-                  {data.agents.running} running{", "}
-                  {data.agents.paused} paused{", "}
-                  {data.agents.error} errors
+                  {data.agents.running} {t('dashboard.running')}{", "}
+                  {data.agents.paused} {t('dashboard.paused')}{", "}
+                  {data.agents.error} {t('dashboard.errors')}
                 </span>
               }
             />
             <MetricCard
               icon={CircleDot}
               value={data.tasks.inProgress}
-              label="Tasks In Progress"
+              label={t('dashboard.tasksInProgress')}
               to="/issues"
               description={
                 <span>
-                  {data.tasks.open} open{", "}
-                  {data.tasks.blocked} blocked
+                  {data.tasks.open} {t('dashboard.open')}{", "}
+                  {data.tasks.blocked} {t('dashboard.blocked')}
                 </span>
               }
             />
             <MetricCard
               icon={DollarSign}
               value={formatCents(data.costs.monthSpendCents)}
-              label="Month Spend"
+              label={t('dashboard.monthSpend')}
               to="/costs"
               description={
                 <span>
                   {data.costs.monthBudgetCents > 0
                     ? `${data.costs.monthUtilizationPercent}% of ${formatCents(data.costs.monthBudgetCents)} budget`
-                    : "Unlimited budget"}
+                    : t('dashboard.unlimitedBudget')}
                 </span>
               }
             />
             <MetricCard
               icon={ShieldCheck}
               value={data.pendingApprovals + data.budgets.pendingApprovals}
-              label="Pending Approvals"
+              label={t('dashboard.pendingApprovals')}
               to="/approvals"
               description={
                 <span>
                   {data.budgets.pendingApprovals > 0
-                    ? `${data.budgets.pendingApprovals} budget overrides awaiting board review`
-                    : "Awaiting board review"}
+                    ? `${data.budgets.pendingApprovals} budget overrides ${t('dashboard.awaitingBoardReview')}`
+                    : t('dashboard.awaitingBoardReview')}
                 </span>
               }
             />
           </div>
 
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-            <ChartCard title="Run Activity" subtitle="Last 14 days">
+            <ChartCard title={t('dashboard.runActivity')} subtitle={t('dashboard.last14days')}>
               <RunActivityChart runs={runs ?? []} />
             </ChartCard>
-            <ChartCard title="Issues by Priority" subtitle="Last 14 days">
+            <ChartCard title={t('dashboard.issuesByPriority')} subtitle={t('dashboard.last14days')}>
               <PriorityChart issues={issues ?? []} />
             </ChartCard>
-            <ChartCard title="Issues by Status" subtitle="Last 14 days">
+            <ChartCard title={t('dashboard.issuesByStatus')} subtitle={t('dashboard.last14days')}>
               <IssueStatusChart issues={issues ?? []} />
             </ChartCard>
-            <ChartCard title="Success Rate" subtitle="Last 14 days">
+            <ChartCard title={t('dashboard.successRate')} subtitle={t('dashboard.last14days')}>
               <SuccessRateChart runs={runs ?? []} />
             </ChartCard>
           </div>
@@ -310,7 +312,7 @@ export function Dashboard() {
             {recentActivity.length > 0 && (
               <div className="min-w-0">
                 <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide mb-3">
-                  Recent Activity
+                  {t('dashboard.recentActivity')}
                 </h3>
                 <div className="border border-border divide-y divide-border overflow-hidden">
                   {recentActivity.map((event) => (
@@ -330,7 +332,7 @@ export function Dashboard() {
             {/* Recent Tasks */}
             <div className="min-w-0">
               <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide mb-3">
-                Recent Tasks
+                {t('dashboard.recentTasks')}
               </h3>
               {recentIssues.length === 0 ? (
                 <div className="border border-border p-4">

@@ -1,6 +1,7 @@
 import { useState, useEffect, useMemo } from "react";
 import { Link, useNavigate, useLocation } from "@/lib/router";
 import { useQuery } from "@tanstack/react-query";
+import { useTranslation } from "react-i18next";
 import { agentsApi, type OrgNode } from "../api/agents";
 import { heartbeatsApi } from "../api/heartbeats";
 import { useCompany } from "../context/CompanyContext";
@@ -64,6 +65,7 @@ function filterOrgTree(nodes: OrgNode[], tab: FilterTab, showTerminated: boolean
 }
 
 export function Agents() {
+  const { t } = useTranslation();
   const { selectedCompanyId } = useCompany();
   const { openNewAgent } = useDialog();
   const { setBreadcrumbs } = useBreadcrumbs();
