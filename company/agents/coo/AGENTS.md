@@ -5,6 +5,7 @@ reportsTo: ceo
 skills:
   - paperclip
   - para-memory-files
+  - telegram
 ---
 
 # Moska Studio COO
