@@ -11,6 +11,7 @@ import {
   Boxes,
   Repeat,
   Settings,
+  Map,
 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { LanguageSelector } from "./LanguageSelector";
@@ -104,6 +105,10 @@ export function Sidebar() {
           <SidebarNavItem to="/issues" label={t('nav.issues')} icon={CircleDot} />
           <SidebarNavItem to="/routines" label={t('nav.routines')} icon={Repeat} textBadge="Beta" textBadgeTone="amber" />
           <SidebarNavItem to="/goals" label={t('nav.goals')} icon={Target} />
+        </SidebarSection>
+
+        <SidebarSection label="프로젝트">
+          <SidebarNavItem to="/roadmap" label="로드맵" icon={Map} />
         </SidebarSection>
 
         <SidebarProjects />
