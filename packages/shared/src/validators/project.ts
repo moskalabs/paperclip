@@ -103,6 +103,7 @@ const projectFields = {
   targetDate: z.string().optional().nullable(),
   color: z.string().optional().nullable(),
   executionWorkspacePolicy: projectExecutionWorkspacePolicySchema.optional().nullable(),
+  devStage: z.number().int().min(0).max(15).optional().nullable(),
   archivedAt: z.string().datetime().optional().nullable(),
 };
 
